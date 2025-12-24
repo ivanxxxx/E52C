@@ -103,6 +103,30 @@ jobs:
           cd openwrt/
           ${GITHUB_WORKSPACE}/${DIY_P1_SH}
 
+      - name: Copy custom package
+        run: cp -f -r config/${{ inputs.source_branch }}/cpufreq/ -t openwrt/package/
+
+      - name: Remove conflict package with passwall
+        run: cd openwrt/ && rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls} 
+
+      - name: Remove conflict lean_package with passwall
+        run: cd openwrt/ && rm -rf feeds/lean_packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
+
+      - name: Remove conflict lean_luci with passwall
+        run: cd openwrt/ && rm -rf feeds/lean_luci/applications/luci-app-passwall
+
+      - name: Remove conflict lean_luci with turboacc
+        run: cd openwrt/ && rm -rf feeds/lean_luci/applications/luci-app-turboacc
+
+      - name: Add passwall-luci
+        run: cd openwrt/ && git clone https://github.com/xiaorouji/openwrt-passwall package/passwall-luci
+
+      - name: Add passwall-package
+        run: cd openwrt/ && git clone https://github.com/xiaorouji/openwrt-passwall-packages package/passwall-packages
+
+      - name: Add turboacc
+        run: cd openwrt/ && curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh 
+
       - name: Update feeds
         run: cd openwrt/ && ./scripts/feeds update -a
 
