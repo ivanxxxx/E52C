@@ -25,6 +25,7 @@ env:
   CONFIG_FILE: config/${{ inputs.source_branch }}/config
   DIY_P1_SH: config/${{ inputs.source_branch }}/diy-part1.sh
   DIY_P2_SH: config/${{ inputs.source_branch }}/diy-part2.sh
+  SSR_Makefile: config/${{ inputs.source_branch }}/ssr/Makefile
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -123,6 +124,10 @@ jobs:
 
       - name: Add passwall-package
         run: cd openwrt/ && git clone https://github.com/xiaorouji/openwrt-passwall-packages package/passwall-packages
+
+      - name: Copy SSR Makefile
+        run: |
+          [[ -f "${SSR_Makefile}" ]] && cp -f ${SSR_Makefile} openwrt/package/passwall-packages/shadowsocksr-libev/Makefile
 
       - name: Update feeds
         run: cd openwrt/ && ./scripts/feeds update -a
