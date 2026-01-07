@@ -23,6 +23,7 @@ on:
 env:
   FEEDS_CONF: config/${{ inputs.source_branch }}/feeds.conf.default
   CONFIG_FILE: config/${{ inputs.source_branch }}/config
+  X86CONFIG_FILE: config/${{ inputs.source_branch }}/x86/config
   SSR_Makefile: config/${{ inputs.source_branch }}/ssr/Makefile
   DIY_P1_SH: config/${{ inputs.source_branch }}/diy-part1.sh
   DIY_P2_SH: config/${{ inputs.source_branch }}/diy-part2.sh
@@ -104,9 +105,6 @@ jobs:
           cd openwrt/
           ${GITHUB_WORKSPACE}/${DIY_P1_SH}
 
-      - name: Copy custom package
-        run: cp -f -r config/${{ inputs.source_branch }}/cpufreq/ -t openwrt/package/
-
       - name: Update feeds
         run: cd openwrt/ && ./scripts/feeds update -a
 
@@ -138,7 +136,7 @@ jobs:
       - name: Load custom configuration
         run: |
           [[ -d "files" ]] && mv -f files openwrt/files
-          [[ -e "${CONFIG_FILE}" ]] && cp -f ${CONFIG_FILE} openwrt/.config
+          [[ -e "${X86CONFIG_FILE}" ]] && cp -f ${X86CONFIG_FILE} openwrt/.config
           chmod +x ${DIY_P2_SH}
           cd openwrt/
           ${GITHUB_WORKSPACE}/${DIY_P2_SH}
