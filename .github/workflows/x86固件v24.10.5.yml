@@ -59,6 +59,9 @@ jobs:
           sudo mkdir -p /workdir
           sudo chown ${USER}:${GROUPS} /workdir
           sudo timedatectl set-timezone "${TZ}"
+          wget https://github.com/Kitware/CMake/releases/download/v3.31.0/cmake-3.31.0-linux-x86_64.sh
+          chmod +x cmake-3.31.0-linux-x86_64.sh
+          sudo ./cmake-3.31.0-linux-x86_64.sh --skip-license --prefix=/usr/local
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Clone source code [ ${{ inputs.source_branch }} ]
