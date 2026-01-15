@@ -63,10 +63,16 @@ jobs:
 
       - name: update automake to 1.17
         run: |
-          [[ -f "${AM_FILE}" ]] && cp -f ${AM_FILE} /usr/local/bin/automake
-          sudo chmod +x /usr/local/bin/automake
-          echo 'export PATH=/usr/local/bin:$PATH' >> ~/.bashrc
-          source ~/.bashrc
+          #[[ -f "${AM_FILE}" ]] && cp -f ${AM_FILE} /usr/local/bin/automake
+          #sudo chmod +x /usr/local/bin/automake
+          #echo 'export PATH=/usr/local/bin:$PATH' >> ~/.bashrc
+          #source ~/.bashrc
+          wget https://ftp.gnu.org/gnu/automake/automake-1.17.tar.xz
+          tar xf automake-1.17.tar.xz
+          cd automake-1.17
+          ./configure --prefix=/usr/local
+          make -j$(nproc)
+          sudo make install
 
       - name: Clone source code [ ${{ inputs.source_branch }} ]
         id: codes
