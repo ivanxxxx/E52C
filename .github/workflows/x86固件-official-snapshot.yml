@@ -46,7 +46,7 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          docker rmi `docker images -q`
+          docker images -q | xargs -r docker rmi
           [[ -n "${AGENT_TOOLSDIRECTORY}" ]] && sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
           sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android 2>/dev/null
           sudo -E apt-get -y update
@@ -60,6 +60,15 @@ jobs:
           sudo chown ${USER}:${GROUPS} /workdir
           sudo timedatectl set-timezone "${TZ}"
           echo "status=success" >> ${GITHUB_OUTPUT}
+
+      - name: update automake to 1.17
+        run: |
+          wget https://ftp.gnu.org/gnu/automake/automake-1.17.tar.xz
+          tar xf automake-1.17.tar.xz
+          cd automake-1.17
+          ./configure --prefix=/usr/local
+          make -j$(nproc)
+          sudo make install
 
       - name: Clone source code [ ${{ inputs.source_branch }} ]
         id: codes
@@ -117,6 +126,9 @@ jobs:
       - name: Remove conflict lean_luci with passwall
         run: cd openwrt/ && rm -rf feeds/lean_luci/applications/luci-app-passwall
 
+      - name: Remove conflict lean_luci-app-turboacc
+        run: cd openwrt/ && rm -rf feeds/lean_luci/applications/luci-app-turboacc
+
       - name: Add passwall-luci
         run: cd openwrt/ && git clone https://github.com/xiaorouji/openwrt-passwall package/passwall-luci
 
@@ -129,6 +141,9 @@ jobs:
 
       - name: Install feeds
         run: cd openwrt/ && ./scripts/feeds install -a
+
+      - name: Add turboacc
+        run: cd openwrt/ && curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
 
       - name: Load custom configuration
         run: |
