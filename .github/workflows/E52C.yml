@@ -119,6 +119,9 @@ jobs:
       - name: Update feeds
         run: cd openwrt/ && ./scripts/feeds update -a
 
+      - name: Install feeds
+        run: cd openwrt/ && ./scripts/feeds install -a
+
       - name: Remove conflict package with passwall
         run: cd openwrt/ && rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
 
@@ -132,20 +135,14 @@ jobs:
         run: cd openwrt/ && rm -rf feeds/lean_luci/applications/luci-app-turboacc
 
       - name: Add passwall-luci
-        run: cd openwrt/ && git clone https://github.com/xiaorouji/openwrt-passwall package/passwall-luci
+        run: cd openwrt/ && git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
 
       - name: Add passwall-package
-        run: cd openwrt/ && git clone https://github.com/xiaorouji/openwrt-passwall-packages package/passwall-packages
+        run: cd openwrt/ && git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
 
       - name: Copy SSR Makefile
         run: |
           [[ -f "${SSR_Makefile}" ]] && cp -f ${SSR_Makefile} openwrt/package/passwall-packages/shadowsocksr-libev/Makefile
-
-      #- name: Update feeds
-        #run: cd openwrt/ && ./scripts/feeds update -a
-
-      - name: Install feeds
-        run: cd openwrt/ && ./scripts/feeds install -a
 
       - name: Add turboacc
         run: cd openwrt/ && curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
@@ -167,8 +164,8 @@ jobs:
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
-      - name: Debug with tmate
-        uses: mxschmitt/action-tmate@v3
+      #- name: Debug with tmate
+        #uses: mxschmitt/action-tmate@v3
 
       - name: Compile the OpenWrt
         id: compile
