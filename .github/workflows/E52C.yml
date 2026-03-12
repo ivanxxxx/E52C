@@ -113,8 +113,8 @@ jobs:
           cd openwrt/
           ${GITHUB_WORKSPACE}/${DIY_P1_SH}
 
-      #- name: Copy custom package
-        #run: cp -f -r config/${{ inputs.source_branch }}/cpufreq/ -t openwrt/package/
+      - name: Copy custom package
+        run: cp -f -r config/${{ inputs.source_branch }}/cpufreq/ -t openwrt/package/
 
       - name: Update feeds
         run: cd openwrt/ && ./scripts/feeds update -a
@@ -158,6 +158,12 @@ jobs:
 
       - name: Add luci-app-openclash
         run: cd openwrt/packages && git clone --depth=1 -b master --filter=blob:none --sparse https://github.com/vernesong/OpenClash.git && cd OpenClash && git sparse-checkout set luci-app-openclash
+
+      - name: Add luci-app-socat
+        run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-eqosplus packages/luci-app-socat
+
+      - name: Add luci-app-cpufreq
+        run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-eqosplus packages/luci-app-cpufreq
 
       - name: Add turboacc
         run: cd openwrt/ && curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
