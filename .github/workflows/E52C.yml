@@ -160,7 +160,7 @@ jobs:
         run: cd openwrt/package && git clone --depth=1 -b master --filter=blob:none --sparse https://github.com/vernesong/OpenClash.git && cd OpenClash && git sparse-checkout set luci-app-openclash
 
       - name: Add luci-app-socat
-        run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-eqosplus package/luci-app-socat
+        run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-socat package/luci-app-socat
 
       - name: Add luci-app-cpufreq
         run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-eqosplus package/luci-app-cpufreq
