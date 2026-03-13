@@ -140,7 +140,7 @@ jobs:
         run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-syncdial package/luci-app-syncdial
 
       - name: Add luci-app-ddns-go
-        run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-ddns-go package/luci-app-ddns-go
+        run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-ddns-go package/ddns-go
 
       - name: Add luci-theme-argon
         run: cd openwrt/ && git clone https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
