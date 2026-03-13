@@ -154,8 +154,8 @@ jobs:
       - name: Add luci-app-socat
         run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-eqosplus package/luci-app-socat
 
-      - name: Add luci-app-cpufreq
-        run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-eqosplus package/luci-app-cpufreq
+      #- name: Add luci-app-cpufreq
+        #run: cd openwrt/ && git clone https://github.com/ivanxxxx/luci-app-eqosplus package/luci-app-cpufreq
 
       - name: Add turboacc
         run: cd openwrt/ && curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
